@@ -1,8 +1,9 @@
 <?php
 namespace Poirot\Config\Reader;
 
-
 use Poirot\Config\ResourceFactory;
+use Poirot\Config\Exceptions\exParseConfig;
+
 
 class Json
     extends aReader
@@ -49,7 +50,7 @@ class Json
         $config = json_decode($data, true);
 
         if (null !== $config && ! is_array($config)) {
-            throw new \RuntimeException(
+            throw new exParseConfig(
                 'Invalid JSON configuration; did not return an array or object'
             );
         }
@@ -61,7 +62,7 @@ class Json
             return $config;
 
 
-        throw new \RuntimeException(json_last_error_msg());
+        throw new exParseConfig(json_last_error_msg());
     }
 
     /**

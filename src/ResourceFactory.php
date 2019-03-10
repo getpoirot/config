@@ -2,6 +2,8 @@
 namespace Poirot\Config;
 
 
+use Poirot\Config\Exceptions\exOpenResource;
+
 class ResourceFactory
 {
     /** @see http://php.net/manual/en/wrappers.php.php */
@@ -72,7 +74,7 @@ class ResourceFactory
             ));
 
         if ( false === $resource = fopen($sockUri, 'r', false) )
-            throw new \RuntimeException('Cannot Open Stream.');
+            throw new exOpenResource('Cannot Open Stream.');
 
         
         return $resource;

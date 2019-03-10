@@ -75,7 +75,7 @@ abstract class aReader
         $stream = $this->resource;
         $data   = stream_get_contents($stream, $inByte);
         if (false === $data)
-            throw new \RuntimeException('Cannot read stream.');
+            throw new exReadFromResource('Cannot read stream.');
 
         return $data;
     }
@@ -128,6 +128,10 @@ abstract class aReader
             return false;
 
         $meta = stream_get_meta_data($this->resource);
+        if ( in_array($meta['uri'], ['php://memory', 'php://temp']) )
+            return false;
+
+        
         return $meta['uri'] ?: false;
     }
     
