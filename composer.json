@@ -1,0 +1,17 @@
+{
+    "name": "poirot/config"
+    , "description": "config loader and writer provider."
+    , "type"       : "library"
+    , "authors": [
+        {
+            "name": "Payam Naderi"
+            , "email": "naderi.payam@gmail.com"
+            , "role": "Developer"
+        }
+    ]
+    , "autoload"  : {
+        "psr-4": {
+            "Poirot\\Config\\": "src/"
+        }
+    }
+}
