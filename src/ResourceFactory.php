@@ -35,9 +35,11 @@ class ResourceFactory
         if ( false === $resource = fopen($sockUri, 'br+') )
             throw new \RuntimeException('Cannot Open Stream.');
         
-        if ( false === fwrite($stream, $content) )
+        if ( false === fwrite($resource, $content) )
             throw new \RuntimeException('Cannot write on stream.');
 
+        
+        rewind($resource);
         return $resource;
     }
 
@@ -69,7 +71,7 @@ class ResourceFactory
                     , $scheme , $sockUri
             ));
 
-        if ( false === $resource = fopen($sockUri, 'br+') )
+        if ( false === $resource = fopen($sockUri, 'r', false) )
             throw new \RuntimeException('Cannot Open Stream.');
 
         

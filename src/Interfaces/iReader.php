@@ -1,5 +1,5 @@
 <?php
-namespace Poirot\Config;
+namespace Poirot\Config\Interfaces;
 
 
 interface iReader
@@ -11,4 +11,14 @@ interface iReader
      * @param resource $resource
      */
     function __construct($resource);
+
+    
+    /**
+     * Is Stream Alive?
+     *
+     * - resource availability
+     *
+     * @return boolean
+     */
+    function isAlive();
 }
