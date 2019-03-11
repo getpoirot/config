@@ -1,8 +1,8 @@
 <?php
 namespace Poirot\Config;
 
-
 use Poirot\Config\Exceptions\exOpenResource;
+
 
 class ResourceFactory
 {
