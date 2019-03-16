@@ -20,7 +20,7 @@ class ResourceFactory
      * @return resource
      * @throws \RuntimeException
      */
-    function createFromString(string $content, $sockUri = self::PHP_MEMORY)
+    static function createFromString(string $content, $sockUri = self::PHP_MEMORY)
     {
         switch ($sockUri) {
             case self::PHP_MEMORY:
@@ -53,7 +53,7 @@ class ResourceFactory
      * @return resource
      * @throws \RuntimeException
      */
-    function createFromUri(string $sockUri)
+    static function createFromUri(string $sockUri)
     {
         // knowing transport/wrapper:
         $scheme = parse_url($sockUri, PHP_URL_SCHEME);
