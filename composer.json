@@ -9,6 +9,9 @@
             , "role": "Developer"
         }
     ]
+    , "require": {
+        "poirot/std": "dev-devel"
+    }
     , "autoload"  : {
         "psr-4": {
             "Poirot\\Config\\": "src/"
