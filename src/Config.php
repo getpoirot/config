@@ -36,7 +36,7 @@ class Config
         $this->_assertImmutable();
 
 
-        if (is_array($value) || $value instanceof Config)
+        if (is_array($value) || $value instanceof StdArray || $value instanceof Config)
             $value = new static($value, $this->isImmutable());
 
         if (null !== $key) {
