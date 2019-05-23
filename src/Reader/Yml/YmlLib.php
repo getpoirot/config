@@ -5,7 +5,7 @@ use Poirot\Config\ResourceFactory;
 use Poirot\Config\Exceptions\exParseConfig;
 
 
-class Json
+class YmlLib
     extends aReader
 {
     protected $directory;
@@ -16,7 +16,7 @@ class Json
      */
     function getIterator()
     {
-        $data = $this->_parseJsonFromResource();
+        $data = $this->_parseYmlFromResource();
         foreach ($data as $k => $v)
             yield $k => $v;
 
@@ -26,7 +26,7 @@ class Json
 
     // ..
 
-    protected function _parseJsonFromResource()
+    protected function _parseYmlFromResource()
     {
         $this->directory = ( $uri = $this->_hasUriResource() ) ? dirname($uri) : false;
 
@@ -34,35 +34,17 @@ class Json
         return $this->process($config);
     }
 
-    /**
-     * Decode JSON configuration.
-     *
-     * Determines if ext/json is present, and, if so, uses that to decode the
-     * configuration. Otherwise, it uses zend-json, and, if that is missing,
-     * raises an exception indicating inability to decode.
-     *
-     * @param string $data
-     * @return array
-     * @throws \RuntimeException for any decoding errors.
-     */
     protected function decode($data)
     {
-        $config = json_decode($data, true);
+        $config = yaml_parse($data);
 
         if (null !== $config && ! is_array($config)) {
             throw new exParseConfig(
-                'Invalid JSON configuration; did not return an array or object'
+                'Invalid YML configuration; did not return an array or object'
             );
         }
 
-        if (null !== $config)
-            return $config;
-
-        if (JSON_ERROR_NONE === json_last_error())
-            return $config;
-
-
-        throw new exParseConfig(json_last_error_msg());
+        return $config;
     }
 
     /**
@@ -81,7 +63,7 @@ class Json
 
             if (trim($key) === '@include') {
                 if ($this->directory === null)
-                    throw new \RuntimeException('Cannot process @include statement for a JSON string');
+                    throw new \RuntimeException('Cannot process @include statement for a YML string');
 
                 $reader = new self( ResourceFactory::createFromUri($this->directory.'/'.$value) );
                 unset($data[$key]);
