@@ -3,6 +3,7 @@ namespace Poirot\Config\Reader;
 
 use Poirot\Config\ResourceFactory;
 use Poirot\Config\Exceptions\exParseConfig;
+use Poirot\Std\Type\StdString;
 
 
 class Json
@@ -79,13 +80,25 @@ class Json
             if (is_array($value))
                 $data[$key] = $this->process($value);
 
-            if (trim($key) === '@include') {
+            elseif (trim($key) === '@include') {
                 if ($this->directory === null)
                     throw new \RuntimeException('Cannot process @include statement for a JSON string');
 
-                $reader = new self( ResourceFactory::createFromUri($this->directory.'/'.$value) );
-                unset($data[$key]);
-                $data = array_replace_recursive($data, iterator_to_array($reader));
+                try {
+                    $value   = StdString::of($value)->stripPrefix('./');
+                    $include = (! $value->isStartWith('/') )
+                        // relative path
+                        ? $this->directory . '/' . $value
+                        // absolute path
+                        : $value;
+
+                    $reader  = new self( ResourceFactory::createFromUri($include) );
+                    unset($data[$key]);
+                    $data = array_replace_recursive($data, iterator_to_array($reader));
+
+                } catch (\Exception $e) {
+                    throw new \RuntimeException(sprintf('Can`t include "%s".', $include));
+                }
             }
         }
 
