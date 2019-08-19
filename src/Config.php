@@ -88,7 +88,7 @@ class Config
     /**
      * Merge Config with Given Data
      *
-     * @param \Traversable $data
+     * @param \Traversable|array $data
      *
      * @return $this
      */
