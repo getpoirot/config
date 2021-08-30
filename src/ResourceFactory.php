@@ -20,18 +20,13 @@ class ResourceFactory
      * @return resource
      * @throws \RuntimeException
      */
-    static function createFromString(string $content, $sockUri = self::PHP_MEMORY)
+    static function createFromString(string $content, string $sockUri = self::PHP_MEMORY)
     {
-        switch ($sockUri) {
-            case self::PHP_MEMORY:
-                $sockUri = 'php://'.self::PHP_MEMORY;
-                break;
-            case self::PHP_TEMP:
-                $sockUri = 'php://'.self::PHP_TEMP;
-                break;
-            default:
-                throw new \InvalidArgumentException('Invalid Stream Provided, Must memory Or temp Provided.');
-        }
+        $sockUri = match ($sockUri) {
+            self::PHP_MEMORY => 'php://' . self::PHP_MEMORY,
+            self::PHP_TEMP => 'php://' . self::PHP_TEMP,
+            default => throw new \InvalidArgumentException('Invalid Stream Provided, Must memory Or temp Provided.'),
+        };
 
 
         if ( false === $resource = fopen($sockUri, 'br+') )

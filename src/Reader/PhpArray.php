@@ -2,7 +2,6 @@
 namespace Poirot\Config\Reader;
 
 use Poirot\Config\Exceptions\exOpenResource;
-use Poirot\Config\ResourceFactory;
 use Poirot\Config\Exceptions\exParseConfig;
 
 
@@ -18,10 +17,8 @@ class PhpArray
     function getIterator()
     {
         $data = $this->_parseFromResource();
-        foreach ($data as $k => $v)
-            yield $k => $v;
 
-        return $data;
+        return new \ArrayIterator($data);
     }
 
 
